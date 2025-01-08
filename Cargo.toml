@@ -1,0 +1,44 @@
+[package]
+name = "bevy_framebuffer"
+authors = ["Christopher Edward Dawn"]
+version = "0.1.0"
+edition = "2021"
+description = "Bevy framebuffer rendering using the `pixels` and `softbuffer` backends."
+readme = "README.md"
+repository = "https://github.com/cedtwo/bevy_framebuffer.git"
+license = "MIT OR Apache-2.0"
+keywords = ["bevy", "pixels", "softbuffer", "buffer"]
+categories = ["game-development", "rendering", "graphics"]
+exclude = ["examples"]
+
+[dependencies.bevy]
+version = "0.15.0"
+default-features = false
+optional = true
+
+[dependencies.pixels]
+version =  "0.15"
+optional = true
+
+[dependencies.softbuffer]
+version =  "0.4.6"
+optional = true
+
+[dev-dependencies]
+bevy = { version = "0.15.0", default-features = false, features = [ "x11", "wayland" ] }
+
+[features]
+default = ["dep:bevy", "schedule"]
+pixels = ["dep:pixels", "bevy/bevy_window", "bevy/bevy_winit"]
+softbuffer = ["dep:softbuffer", "bevy/bevy_window", "bevy/bevy_winit"]
+schedule = []
+
+[[example]]
+name = "minimal_pixels"
+path = "examples/minimal_pixels.rs"
+required-features = ["pixels", "schedule"]
+
+[[example]]
+name = "minimal_softbuffer"
+path = "examples/minimal_softbuffer.rs"
+required-features = ["softbuffer", "schedule"]

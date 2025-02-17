@@ -1,11 +1,9 @@
-use bevy::a11y::AccessibilityPlugin;
 use bevy::prelude::*;
-use bevy::window::{WindowPlugin, WindowResized};
-use bevy::winit::{WakeUp, WinitPlugin};
+use bevy::window::WindowResized;
 
 use bevy_framebuffer::pixels_impl::{PixelsConfig, PixelsFrame};
 use bevy_framebuffer::schedule::{RenderSchedule, SurfaceSchedule};
-use bevy_framebuffer::FrameBufferPlugin;
+use bevy_framebuffer::PixelsPlugin;
 
 /// The fixed buffer width.
 const BUFFER_WIDTH: u32 = 320;
@@ -16,11 +14,8 @@ fn main() {
     let mut app = App::new();
 
     app.add_plugins((
-        MinimalPlugins,
-        WindowPlugin::default(),
-        AccessibilityPlugin,
-        WinitPlugin::<WakeUp>::default(),
-        FrameBufferPlugin {
+        DefaultPlugins,
+        PixelsPlugin {
             config: PixelsConfig {
                 width: BUFFER_WIDTH,
                 height: BUFFER_HEIGHT,

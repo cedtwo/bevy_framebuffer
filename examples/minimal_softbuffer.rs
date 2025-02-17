@@ -1,13 +1,11 @@
 use std::num::NonZeroU32;
 
-use bevy::a11y::AccessibilityPlugin;
 use bevy::prelude::*;
-use bevy::window::{WindowPlugin, WindowResized};
-use bevy::winit::{WakeUp, WinitPlugin};
+use bevy::window::WindowResized;
 
 use bevy_framebuffer::schedule::{RenderSchedule, SurfaceSchedule};
 use bevy_framebuffer::softbuffer_impl::{SoftBufferConfig, SoftBufferFrame};
-use bevy_framebuffer::FrameBufferPlugin;
+use bevy_framebuffer::SoftbufferPlugin;
 
 /// The initial, and minimum buffer width.
 const INITIAL_BUFFER_WIDTH: u32 = 320;
@@ -35,11 +33,8 @@ fn main() {
     let mut app = App::new();
 
     app.add_plugins((
-        MinimalPlugins,
-        WindowPlugin::default(),
-        AccessibilityPlugin,
-        WinitPlugin::<WakeUp>::default(),
-        FrameBufferPlugin {
+        DefaultPlugins,
+        SoftbufferPlugin {
             config: SoftBufferConfig {
                 width: NonZeroU32::new(INITIAL_BUFFER_WIDTH).unwrap(),
                 height: NonZeroU32::new(INITIAL_BUFFER_HEIGHT).unwrap(),

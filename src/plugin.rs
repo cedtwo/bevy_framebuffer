@@ -1,39 +1,58 @@
-//! `bevy` plugin definition.
+//! `bevy` plugin definitions.
 use bevy::prelude::*;
 
 use crate::framebuffer::FrameBufferType;
 use crate::schedule::SchedulePlugin;
 
-/// `FrameBuffer` plugin. Registers a `FrameBufferType` as a `NonSend` resource.
-pub struct FrameBufferPlugin {
-    #[cfg(feature = "pixels")]
-    pub config: crate::pixels_impl::Config,
-    #[cfg(feature = "softbuffer")]
-    pub config: crate::softbuffer_impl::Config,
+/// Define a plugin for the given `bevy_framebuffer` backend.
+macro_rules! define_plugin {
+    (
+        $plugin_name: ident,
+        $feature: literal,
+        $frame: path,
+        $config: path
+    ) => {
+        #[cfg(feature = $feature)]
+        #[doc = concat!("`bevy_framebuffer` plugin for the `", $feature, "` library. Registers [`", stringify!($frame), "`] as a `NonSend` resource.")]
+        pub struct $plugin_name {
+            #[doc = concat!("Configuration for the `", $feature, "` library.")]
+            pub config: $config,
+        }
+
+        #[cfg(feature = $feature)]
+        impl Plugin for $plugin_name {
+            fn build(&self, app: &mut App) {
+                type BACKEND = $frame;
+
+                app.add_plugins(SchedulePlugin);
+
+                let config = self.config.clone();
+                app.add_systems(
+                    Startup,
+                    move |params: <BACKEND as FrameBufferType>::StartupParams<'_, '_>| {
+                        <BACKEND as FrameBufferType>::STARTUP(params, config.clone())
+                    },
+                );
+            }
+        }
+    };
 }
 
-impl Plugin for FrameBufferPlugin {
-    fn build(&self, app: &mut App) {
-        #[cfg(all(feature = "pixels", feature = "softbuffer"))]
-        compile_error!("Only one of the `pixels` or `softbuffer` feature can be enabled");
+#[cfg(feature = "pixels")]
+use crate::pixels_impl;
 
-        #[cfg(not(any(feature = "pixels", feature = "softbuffer")))]
-        compile_error!("Either the `pixels` or `softbuffer` feature must be enabled");
+define_plugin!(
+    PixelsPlugin,
+    "pixels",
+    pixels_impl::PixelsFrame,
+    pixels_impl::PixelsConfig
+);
 
-        #[cfg(feature = "pixels")]
-        type BACKEND = crate::pixels_impl::PixelsFrame;
-        #[cfg(feature = "softbuffer")]
-        type BACKEND = crate::softbuffer_impl::SoftBufferFrame;
-
-        let config = self.config.clone();
-
-        app.add_plugins(SchedulePlugin);
-
-        app.add_systems(
-            Startup,
-            move |params: <BACKEND as FrameBufferType>::StartupParams<'_, '_>| {
-                <BACKEND as FrameBufferType>::STARTUP(params, config.clone())
-            },
-        );
-    }
-}
+#[cfg(feature = "softbuffer")]
+use crate::softbuffer_impl;
+define_plugin!(
+    SoftbufferPlugin,
+    "softbuffer",
+    softbuffer_impl::SoftBufferFrame,
+    softbuffer_impl::SoftBufferConfig
+);

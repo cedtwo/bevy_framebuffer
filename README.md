@@ -88,6 +88,6 @@ enforcing `FrameBuffer` as a `NonSend`/`NonSendMut` resource.
 
 `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 ---|---|---|---
-0.15 | 0.15 | 0.4 | 0.1
+0.15 | 0.15 | 0.4 | 0.1 - 0.2
 
 License: MIT OR Apache-2.0

@@ -10,7 +10,6 @@
 //! ### Example
 //!
 //! ```toml
-//! // Note that you may need to add additional features for your system.
 //! bevy = { version = "0.15.0", default-features = false }
 //! bevy_framebuffer = { version = "0.1.0", features = ["pixels"] }
 //! ```

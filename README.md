@@ -14,7 +14,7 @@ Bevy framebuffer rendering using `pixels` or `softbuffer`.
 ```toml
 bevy = { version = "0.16.0", default-features = false }
 # Enable the `pixels` or `softbuffer` feature.
-bevy_framebuffer = { version = "0.1.0", features = ["pixels"] }
+bevy_framebuffer = { version = "0.3.0", features = ["pixels"] }
 ```
 
 ```rust

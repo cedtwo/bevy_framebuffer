@@ -92,8 +92,12 @@ pub fn startup<'w, 's>(
     }: StartupParams<'w, 's>,
     config: Config,
 ) {
-    let primary_window = primary_window.single();
-    let window = winit_windows.get_window(primary_window).unwrap();
+    let primary_window = primary_window
+        .single()
+        .expect("Expected PrimaryWindow entity");
+    let window = winit_windows
+        .get_window(primary_window)
+        .expect("Expected winit window matching PrimaryWindow entity");
     let handle = RawHandleWrapper::new(window).unwrap();
 
     // SAFETY: `Framebuffer` is `!Send`, `!Sync` and threrefore only accessed on the

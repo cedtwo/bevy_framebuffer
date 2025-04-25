@@ -12,11 +12,13 @@ Bevy framebuffer rendering using `pixels` or `softbuffer`.
 #### Example
 
 ```toml
-bevy = { version = "0.15.0", default-features = false }
+bevy = { version = "0.16.0", default-features = false }
+# Enable the `pixels` or `softbuffer` feature.
 bevy_framebuffer = { version = "0.1.0", features = ["pixels"] }
 ```
 
 ```rust
+let mut app = App::new();
 // Add `DefaultPlugins` and either `PixelsPlugin` or `SoftbufferPlugin` to your project.
 app.add_plugins(
     DefaultPlugins,
@@ -30,7 +32,7 @@ app.add_plugins(
 // Add a render system.
 .add_systems(RenderSchedule, render_system);
 
-// Access the framebuffer in systems with `NonSend` or `NonSendMut`.
+// Access the `PixelsFrame` or `SoftBufferFrame` in systems with `NonSend` or `NonSendMut`.
 pub fn render_system(buffer: NonSendMut<PixelsFrame>) {
     buffer.render().unwrap();
 }
@@ -87,6 +89,6 @@ enforcing `FrameBuffer` as a `NonSend`/`NonSendMut` resource.
 
 `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 ---|---|---|---
-0.15 | 0.15 | 0.4 | 0.1 - 0.2
+0.15 | 0.15 | 0.4 | 0.2
 
 License: MIT OR Apache-2.0

@@ -40,7 +40,6 @@ macro_rules! define_plugin {
 
 #[cfg(feature = "pixels")]
 use crate::pixels_impl;
-
 define_plugin!(
     PixelsPlugin,
     "pixels",

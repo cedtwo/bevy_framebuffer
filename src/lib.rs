@@ -10,7 +10,8 @@
 //! ### Example
 //!
 //! ```toml
-//! bevy = { version = "0.15.0", default-features = false }
+//! bevy = { version = "0.16.0", default-features = false }
+//! # Enable the `pixels` or `softbuffer` feature.
 //! bevy_framebuffer = { version = "0.1.0", features = ["pixels"] }
 //! ```
 //!
@@ -18,14 +19,10 @@
 //! # #[cfg(all(feature = "pixels", feature = "schedule"))]
 //! # {
 //! # use bevy::prelude::*;
-//! # use bevy::a11y::AccessibilityPlugin;
-//! # use bevy::prelude::MinimalPlugins;
-//! # use bevy::window::WindowPlugin;
-//! # use bevy::winit::{WakeUp, WinitPlugin};
 //! # use bevy_framebuffer::FrameBufferPlugin;
 //! # use bevy_framebuffer::pixels_impl::*;
 //! # use bevy_framebuffer::schedule::RenderSchedule;
-//! # let mut app = App::new();
+//! let mut app = App::new();
 //! // Add `DefaultPlugins` and either `PixelsPlugin` or `SoftbufferPlugin` to your project.
 //! app.add_plugins(
 //!     DefaultPlugins,
@@ -39,7 +36,7 @@
 //! // Add a render system.
 //! .add_systems(RenderSchedule, render_system);
 //!
-//! // Access the framebuffer in systems with `NonSend` or `NonSendMut`.
+//! // Access the `PixelsFrame` or `SoftBufferFrame` in systems with `NonSend` or `NonSendMut`.
 //! pub fn render_system(buffer: NonSendMut<PixelsFrame>) {
 //!     buffer.render().unwrap();
 //! }
@@ -97,7 +94,7 @@
 //!
 //! `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 //! ---|---|---|---
-//! 0.15 | 0.15 | 0.4 | 0.1 - 0.2
+//! 0.15 | 0.15 | 0.4 | 0.2
 pub mod framebuffer;
 pub mod plugin;
 

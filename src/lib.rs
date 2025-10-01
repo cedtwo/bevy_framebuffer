@@ -94,6 +94,7 @@
 //!
 //! `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 //! ---|---|---|---
+//! 0.17 | 0.15 | 0.4 | 0.4
 //! 0.16 | 0.15 | 0.4 | 0.3
 //! 0.15 | 0.15 | 0.4 | 0.2
 pub mod framebuffer;

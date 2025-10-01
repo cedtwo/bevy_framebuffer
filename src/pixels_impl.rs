@@ -81,34 +81,33 @@ impl Config {
 pub struct StartupParams<'w, 's> {
     commands: Commands<'w, 's>,
     primary_window: Query<'w, 's, Entity, With<PrimaryWindow>>,
-    winit_windows: NonSend<'w, WinitWindows>,
 }
 
 pub fn startup<'w, 's>(
     StartupParams {
         mut commands,
         primary_window,
-        winit_windows,
     }: StartupParams<'w, 's>,
     config: Config,
 ) {
-    let primary_window = primary_window
-        .single()
-        .expect("Expected PrimaryWindow entity");
-    let window = winit_windows
-        .get_window(primary_window)
-        .expect("Expected winit window matching PrimaryWindow entity");
-    let handle = RawHandleWrapper::new(window).unwrap();
+    let surface = bevy::winit::WINIT_WINDOWS.with_borrow(|windows| {
+        let primary_window = primary_window
+            .single()
+            .expect("Expected PrimaryWindow entity");
+        let window = windows
+            .get_window(primary_window)
+            .expect("Expected winit window matching PrimaryWindow entity");
 
-    // SAFETY: `Framebuffer` is `!Send`, `!Sync` and threrefore only accessed on the
-    // main thread.
-    let raw_handle = unsafe { handle.get_handle() };
+        // SAFETY: `Framebuffer` is `!Send`, `!Sync` and threrefore only accessed on the
+        // main thread.
+        let raw_handle = unsafe { RawHandleWrapper::new(window).unwrap().get_handle() };
 
-    let surface = SurfaceTexture::new(
-        window.inner_size().width,
-        window.inner_size().height,
-        raw_handle,
-    );
+        SurfaceTexture::new(
+            window.inner_size().width,
+            window.inner_size().height,
+            raw_handle,
+        )
+    });
 
     let pixels = config
         .into_pixels(surface)

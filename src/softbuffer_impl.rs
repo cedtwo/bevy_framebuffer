@@ -35,33 +35,35 @@ pub struct Config {
 pub struct StartupParams<'w, 's> {
     commands: Commands<'w, 's>,
     primary_window: Query<'w, 's, Entity, With<PrimaryWindow>>,
-    winit_windows: NonSend<'w, WinitWindows>,
 }
 
 pub fn startup<'w, 's>(
     StartupParams {
         mut commands,
         primary_window,
-        winit_windows,
     }: StartupParams<'w, 's>,
     config: Config,
 ) {
     let primary_window = primary_window
         .single()
         .expect("Expected PrimaryWindow entity");
-    let window = winit_windows
-        .get_window(primary_window)
-        .expect("Expected winit window matching PrimaryWindow entity");
-    let handle = RawHandleWrapper::new(window).unwrap();
 
-    // SAFETY: `Framebuffer` is `!Send`, `!Sync` and threrefore only accessed on the
-    // main thread.
-    let (raw_display, raw_window) = unsafe { (handle.get_handle(), handle.get_handle()) };
+    let mut surface = bevy::winit::WINIT_WINDOWS.with_borrow(|windows| {
+        let window = windows
+            .get_window(primary_window)
+            .expect("Expected winit window matching PrimaryWindow entity");
 
-    let mut surface = {
-        let context = Context::new(raw_display).unwrap();
-        Surface::new(&context, raw_window).unwrap()
-    };
+        let handle = RawHandleWrapper::new(window).unwrap();
+
+        // SAFETY: `Framebuffer` is `!Send`, `!Sync` and threrefore only accessed on the
+        // main thread.
+        let (raw_display, raw_window) = unsafe { (handle.get_handle(), handle.get_handle()) };
+
+        {
+            let context = Context::new(raw_display).unwrap();
+            Surface::new(&context, raw_window).unwrap()
+        }
+    });
 
     surface.resize(config.width, config.height).unwrap();
     commands.queue(|world: &mut World| world.insert_non_send_resource(FrameBuffer::new(surface)));

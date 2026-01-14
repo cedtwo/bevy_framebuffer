@@ -4,7 +4,6 @@ use std::num::NonZeroU32;
 use bevy::ecs::system::SystemParam;
 use bevy::prelude::*;
 use bevy::window::*;
-use bevy::winit::WinitWindows;
 use softbuffer::{Context, Surface};
 
 use crate::framebuffer::{FrameBuffer, FrameBufferType};

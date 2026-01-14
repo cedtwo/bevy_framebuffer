@@ -12,9 +12,9 @@ Bevy framebuffer rendering using `pixels` or `softbuffer`.
 #### Example
 
 ```toml
-bevy = { version = "0.16", default-features = false }
+bevy = { version = "0.18", default-features = false }
 # Enable the `pixels` or `softbuffer` feature.
-bevy_framebuffer = { version = "0.3", features = ["pixels"] }
+bevy_framebuffer = { version = "0.5", features = ["pixels"] }
 ```
 
 ```rust
@@ -78,17 +78,17 @@ cargo run --example minimal_pixels --features="pixels"
 cargo run --example minimal_softbuffer --features="softbuffer"
 ```
 
-### Safety
+### NonSend/NonSendMut Resources
 
-This crate uses `unsafe` to expose `raw_window_handler` implementations with
-the caveat that certain platforms do not support usage off of the main thread.
-As such, `bevy_framebuffer` enforces main thread access on **all** platforms,
-enforcing `FrameBuffer` as a `NonSend`/`NonSendMut` resource.
+Safely exposing `raw_window_handler` must guarantee main thread rendering. As
+such, `bevy_framebuffer` enforces main thread rendering exposing `FrameBuffer`
+as a `NonSend`/`NonSendMut` resource rather than a `Res`/`ResMut` resource.
 
 ### Bevy compatability
 
 `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 ---|---|---|---
+0.18 | 0.15 | 0.4 | 0.5
 0.17 | 0.15 | 0.4 | 0.4
 0.16 | 0.15 | 0.4 | 0.3
 0.15 | 0.15 | 0.4 | 0.2

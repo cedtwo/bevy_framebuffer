@@ -32,7 +32,10 @@ fn main() {
 }
 
 /// Resize the surface.
-pub fn resize_system(mut events: EventReader<WindowResized>, mut buffer: NonSendMut<PixelsFrame>) {
+pub fn resize_system(
+    mut events: MessageReader<WindowResized>,
+    mut buffer: NonSendMut<PixelsFrame>,
+) {
     if let Some(event) = events.read().into_iter().last() {
         buffer
             .resize_surface(event.width as u32, event.height as u32)

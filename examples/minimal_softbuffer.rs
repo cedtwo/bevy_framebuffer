@@ -53,7 +53,7 @@ fn main() {
 /// Resize the buffer if greater than the minimum initial size. Store the new
 /// buffer size in the `BufferSize` resource.
 pub fn resize_system(
-    mut events: EventReader<WindowResized>,
+    mut events: MessageReader<WindowResized>,
     mut buffer: NonSendMut<SoftBufferFrame>,
     mut buffer_size: ResMut<BufferSize>,
 ) {

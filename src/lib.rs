@@ -10,9 +10,9 @@
 //! ### Example
 //!
 //! ```toml
-//! bevy = { version = "0.16", default-features = false }
+//! bevy = { version = "0.18", default-features = false }
 //! # Enable the `pixels` or `softbuffer` feature.
-//! bevy_framebuffer = { version = "0.3", features = ["pixels"] }
+//! bevy_framebuffer = { version = "0.5", features = ["pixels"] }
 //! ```
 //!
 //! ```rust

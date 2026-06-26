@@ -88,6 +88,7 @@ as a `NonSend`/`NonSendMut` resource rather than a `Res`/`ResMut` resource.
 
 `bevy` | `pixels` | `softbuffer` | `bevy_framebuffer`
 ---|---|---|---
+0.19 | 0.17 | 0.4 | 0.6
 0.18 | 0.15 | 0.4 | 0.5
 0.17 | 0.15 | 0.4 | 0.4
 0.16 | 0.15 | 0.4 | 0.3

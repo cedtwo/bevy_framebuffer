@@ -112,5 +112,5 @@ pub fn startup<'w, 's>(
         .into_pixels(surface)
         .expect("Failed building `pixels` framebuffer");
 
-    commands.queue(|world: &mut World| world.insert_non_send_resource(PixelsFrame::new(pixels)));
+    commands.queue(|world: &mut World| world.insert_non_send(PixelsFrame::new(pixels)));
 }

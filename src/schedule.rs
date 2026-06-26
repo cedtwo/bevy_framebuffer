@@ -1,6 +1,6 @@
 //! System schedule definitions and plugin.
 use bevy::app::{Last, MainScheduleOrder, Plugin, PreUpdate};
-use bevy::ecs::schedule::{ExecutorKind, ScheduleLabel};
+use bevy::ecs::schedule::{ScheduleLabel, SingleThreadedExecutor};
 use bevy::prelude::Schedule;
 
 /// Surface/buffer mutation schedule. Runs after `PreUpdate` on the main schedule.
@@ -17,11 +17,11 @@ pub(super) struct SchedulePlugin;
 impl Plugin for SchedulePlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
         let mut buffer_schedule = Schedule::new(SurfaceSchedule);
-        buffer_schedule.set_executor_kind(ExecutorKind::SingleThreaded);
+        buffer_schedule.set_executor(SingleThreadedExecutor::default());
         app.add_schedule(buffer_schedule);
 
         let mut render_schedule = Schedule::new(RenderSchedule);
-        render_schedule.set_executor_kind(ExecutorKind::SingleThreaded);
+        render_schedule.set_executor(SingleThreadedExecutor::default());
         app.add_schedule(render_schedule);
 
         let mut main_schedule = app.world_mut().resource_mut::<MainScheduleOrder>();

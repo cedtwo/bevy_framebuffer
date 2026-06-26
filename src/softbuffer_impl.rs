@@ -65,5 +65,5 @@ pub fn startup<'w, 's>(
     });
 
     surface.resize(config.width, config.height).unwrap();
-    commands.queue(|world: &mut World| world.insert_non_send_resource(FrameBuffer::new(surface)));
+    commands.queue(|world: &mut World| world.insert_non_send(FrameBuffer::new(surface)));
 }
